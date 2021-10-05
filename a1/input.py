@@ -40,10 +40,10 @@ def process_input(line) -> InputContent:
 
     r.status = True
 
-    # if command not vald then return
+    # if command not valid then return
     if cmd not in COMMAND:
         print(
-            f'Your command "{cmd}" is not one of {COMMAND}, try again.', file=stderr)
+            f'Error: Your command "{cmd}" is not one of {COMMAND}, try again.', file=stderr)
         r.status = False
         return r
 
@@ -56,7 +56,7 @@ def process_input(line) -> InputContent:
     # if street name does not exist;
     if not street_name or street_name == '':
         print(
-            f'Your street_name: "{street_name}" for {cmd} is invalid, try again.', file=stderr)
+            f'Error: Your street_name: "{street_name}" for {cmd} is invalid, try again.', file=stderr)
         r.status = False
         return r
 
@@ -68,7 +68,7 @@ def process_input(line) -> InputContent:
 
     if not cord:
         print(
-            f'Your coordinates: "{cord}" for {cmd} is invalid, try again.', file=stderr)
+            f'Error: Your coordinates: "{cord}" for {cmd} is invalid, try again.', file=stderr)
         r.status = False
         return r
 

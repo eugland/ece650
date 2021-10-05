@@ -28,16 +28,17 @@ class Street:
             print('ERRROR Street.remove(): {street_name} does not exists')
 
     def to_line(self):
-        street_segs = {}
+        street_lns = {}
         for street, coordinates in self.street_db.items():
-            print(street, coordinates)
-            # segs = []
-            segs = set()
+            # DEBUG gg recieved line segments
+            # print(street, coordinates)
+            # lns = []
+            lns = set()
             for a, b in zip(coordinates[:-1], coordinates[1:]):
-                segs.add(Line(a, b))
+                lns.add(Line(a, b))
 
-            street_segs[street] = segs
-        return street_segs
+            street_lns[street] = lns
+        return street_lns
 
     def generate_graph(self):
         graph = Graph(self.street_db)

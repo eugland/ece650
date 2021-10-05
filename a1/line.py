@@ -18,7 +18,7 @@ class Line:
         self.n2 = node2
 
         # keep n1 be the one with smaller x
-        if (self.n2.x < self.n1.x):
+        if self.n2.x < self.n1.x:
             self.n1, self.n2 = self.n2, self.n1
 
         # legacy slop finding method
@@ -59,7 +59,7 @@ class Line:
 
         return x_bound[0] <= node.x <= x_bound[1] and y_bound[0] <= node.y <= y_bound[1]
 
-    def segs_on_same_line(self, seg):
+    def lns_on_same_line(self, seg):
         """
         :param seg: another Line
         :return: bool
@@ -88,19 +88,19 @@ class Line:
         """
         if self == seg:
             return {self.n1, self.n2}
-        Node_list = [self.n1, self.n2, seg.n1, seg.n2]
-        Node_set = set(Node_list)     # set literal
+        node_list = [self.n1, self.n2, seg.n1, seg.n2]
+        node_set = set(node_list)     # set literal
         far_ends = set()
         max_dist = 0
-        for pair in combinations(Node_set, 2):
+        for pair in combinations(node_set, 2):
             dist = pair[0].dist(pair[1])
             if dist >= max_dist:
                 max_dist = dist
                 far_ends = {pair[0], pair[1]}
 
-        for Node in far_ends:
-            Node_list.remove(Node)
-        return set(Node_list)
+        for node in far_ends:
+            node_list.remove(node)
+        return set(node_list)
 
     def straddle(self, seg):
         """
@@ -126,7 +126,7 @@ class Line:
         else:
             return False
 
-    def contains_Node(self, Node):
+    def contains_node(self, Node):
         """
         judge whether a Node is on the Line
         :param Node: another Node
@@ -164,8 +164,6 @@ def intersect(l1: Line, l2: Line):
     yden = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4)
     ycoor = ynum / yden
 
-    return Node(xcoor, yco or)
+    return Node(xcoor, ycoor)
 
 
-if __name__ == '__main__':
-    pass
