@@ -13,19 +13,19 @@ class Street:
         if street_name not in self.street_db:
             self.street_db[street_name] = coordinates
         else:
-            print('ERRROR Street.add(): {street_name} already exists')
+            print(f'ERRROR Street.add(): {street_name} already exists')
 
     def modify(self, street_name: str, coordinates: list):
         if street_name in self.street_db:
             self.street_db[street_name] = coordinates
         else:
-            print('ERRROR Street.modify(): {street_name} does not exists')
+            print(f'ERRROR Street.modify(): {street_name} does not exists')
 
     def remove(self, street_name):
         if street_name in self.street_db:
             del self.street_db[street_name]
         else:
-            print('ERRROR Street.remove(): {street_name} does not exists')
+            print(f'ERRROR Street.remove(): {street_name} does not exists')
 
     def to_line(self):
         street_lns = {}

@@ -51,19 +51,34 @@ def process_input(line) -> InputContent:
 
     # if the command is gg, then no need to parse street name or coordinates, nor any need to reject it
     if cmd == GG:
+        print(street_name, cord)
+        if street_name is not None or cord != '':
+            print(
+                f'Error "gg" command cannot have parameters, try again.', file=stderr)
+            r.status = False
         return r
 
     # if street name does not exist;
+    street_name = street_name.strip().lower()
     if not street_name or street_name == '':
         print(
             f'Error: Your street_name: "{street_name}" for {cmd} is invalid, try again.', file=stderr)
         r.status = False
         return r
+    elif not all(chre.isalpha() or chre.isspace() for chre in street_name):
+        print('Error: Street name must contain only letters and spaces.', file=stderr)
+        r.status = False
+        return r
 
-    r.street_name = street_name  # street name must be valid here
+
+     # street name must be valid here
+    r.street_name = street_name
 
     # rm does not need coordiates, exit here
     if cmd == RM:
+        if cord != '':
+            print('Error rm cannot have more than 2 arguments', file=stderr)
+            r.status = False
         return r
 
     if not cord:
@@ -81,8 +96,13 @@ def process_input(line) -> InputContent:
         # return a list of Nodes
         li.append(Node(a, b))
 
-    r.coordinates = li
+    if cmd == ADD:
+        if len(li) <= 1:
+            print("ERROR: for adding, you cannot have only 1 coordinate. ")
+            r.status = False
+            return r
 
+    r.coordinates = li
     return r
 
 

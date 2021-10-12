@@ -17,7 +17,6 @@ def main():
     line = 'a'
     while True:
         try:
-            print('Please input your command to continue or leave the line empty to exit:')
             line = sys.stdin.readline().strip()
             if line == '':
                 sys.stderr.write('Program exiting on empty string')
