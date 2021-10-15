@@ -51,7 +51,7 @@ def process_input(line) -> InputContent:
 
     # if the command is gg, then no need to parse street name or coordinates, nor any need to reject it
     if cmd == GG:
-        print(street_name, cord)
+        # print(street_name, cord)
         if street_name is not None or cord != '':
             print(
                 f'Error "gg" command cannot have parameters, try again.', file=stderr)
@@ -98,7 +98,7 @@ def process_input(line) -> InputContent:
 
     if cmd == ADD:
         if len(li) <= 1:
-            print("ERROR: for adding, you cannot have only 1 coordinate. ")
+            print(f'ERROR: for adding {r.__dict__}, {li}, {cord} you cannot have only 1 coordinate. ')
             r.status = False
             return r
 
