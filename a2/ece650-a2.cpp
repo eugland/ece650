@@ -4,6 +4,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <regex>
 
 using namespace std;
 
@@ -13,16 +14,18 @@ public:
     vector<vector<int>> adj;
 
 
-
     Graph(int vertex_num) {
         v = vertex_num;
         adj = vector<vector<int>>(v, vector<int>());
     }
 
     bool addEdge(int src, int dest) {
+        if (src < 1 || src > v || dest < 1 || dest > v || src == dest) {
+            return false;
+        }
         adj[src].push_back(dest);
         adj[src].push_back(src);
-        return false;
+        return true;
     }
 
     bool bfs(int src, int dest, int v, int pred[]) {
@@ -34,6 +37,37 @@ public:
     }
 };
 
+
+vector<pair<int,int>> parse(string s) {
+    pair<int, int> edge;
+    vector<pair<int,int> > result;
+
+    // using regex
+    try {
+        regex re("-?[0-9]+"); //match consectuive numbers
+        sregex_iterator next(s.begin(), s.end(), re);
+        sregex_iterator end;
+        while (next != end) {
+            smatch match1;
+            smatch match2;
+
+            match1 = *next;
+            next++;
+            // iterate to next match
+            if (next != end) {
+                match2 = *next;
+                edge.first = stoi(match1.str());
+                edge.second = stoi(match2.str());
+                result.push_back(edge);
+                next++;
+            }
+        }
+    }
+    catch (regex_error& e) {
+        result.clear();
+    }
+    return result;
+}
 
 int main(int argc, char** argv) {
 
@@ -73,7 +107,11 @@ int main(int argc, char** argv) {
             } else if (cmd == 'E') {
                 string raw_ver;
                 input >> raw_ver;
+                vector<pair<int, int>> edge = parse(raw_ver);
                 cout << cmd <<" " << raw_ver << endl;
+                for (auto p: edge) {
+                    graph.addEdge(p.first, p.second);
+                }
                 break;
             } else if (cmd == 's') {
                 unsigned int src, dest;
