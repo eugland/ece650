@@ -1,4 +1,0 @@
-C:/Users/eugen/Desktop/learn/ece650/yj9wang/a2/cmake-build-debug/CMakeFiles/ece650-a2.dir
-C:/Users/eugen/Desktop/learn/ece650/yj9wang/a2/cmake-build-debug/CMakeFiles/tests.dir
-C:/Users/eugen/Desktop/learn/ece650/yj9wang/a2/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/eugen/Desktop/learn/ece650/yj9wang/a2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

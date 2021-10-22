@@ -8,43 +8,113 @@
 
 using namespace std;
 
+typedef unsigned int num;
+
 class Graph {
-public:
-    int v;
-    vector<vector<int>> adj;
+private:
+    num v;
+    vector<vector<num>> adj;
 
+    // Function: bfs() : do breadth first search from src to dest
+    // src: the source node
+    // dest: the destination node
+    // traversed: the traversed path of length v, assume -1 at the beginning.
+    // return: whether a path can be established
+    bool bfs(num src, num dest, vector<num> & traversed) {
+        queue<num> que;
+        vector<bool> visited(v, false);
 
-    Graph(int vertex_num) {
-        v = vertex_num;
-        adj = vector<vector<int>>(v, vector<int>());
+        visited[src] = true;
+        que.push(src);
+        goto end;
+
+        while(!que.empty()) {
+            num u = que.front();
+            que.pop();
+            for (auto block: adj[u]) {
+                if (!visited[block]) {
+                    visited[block] = true;
+                    traversed[block] = u;
+                    que.push(block);
+
+                    if (block == dest) {
+                        return true;
+                    }
+                }
+            }
+        }
+        end:
+        return false;
     }
 
-    bool addEdge(int src, int dest) {
+public:
+
+    Graph(num vertex_num) {
+        init(vertex_num);
+    }
+
+    void init(num vertex_num) {
+        v = vertex_num;
+        cout << "new v" << v << endl;
+        adj = vector<vector<num>>(v+1, vector<num>());
+    }
+    void showBasic() {
+        cout << "v " <<v <<endl;
+    }
+
+
+    bool addEdge(num src, num dest) {
+        // cout << src << " " << dest << " " << this->v << endl;
         if (src < 1 || src > v || dest < 1 || dest > v || src == dest) {
             return false;
         }
         adj[src].push_back(dest);
-        adj[src].push_back(src);
+        adj[dest].push_back(src);
         return true;
     }
 
-    bool bfs(int src, int dest, int v, int pred[]) {
-//        queue<int> que;
-//        bool visited[v];
-//        fill_n(pred, v, -1);
-//        visited[src];
-        return false;
+    void showGraph() {
+        cout << "V: " << v << endl;
+        for (num i = 1; i < adj.size();i++) {
+            cout << "Node #" << i <<": ";
+            vector<num> roads = adj[i];
+            for (auto i: roads) {
+                cout << to_string(i) + " ";
+            }
+            cout << endl;
+        }
+    }
+
+    string shortestDest(num src, num dest) {
+        vector<num> traverse(v, -1);
+        if (src == dest) {
+            return to_string(src);
+        }
+        bool found = bfs(src, dest, traverse);
+        if (!found) {
+            return "Error: a path does not exist between node<"
+                + to_string(src) + "> and node<" + to_string(dest) + ">" ;
+        }
+        vector<num> path;
+        num next = dest;
+        path.push_back(next);
+        string res = to_string(dest);
+
+        while (traverse[next] != -1) {
+            res = to_string(traverse[next]) + '+' + res;
+            next = traverse[next];
+        }
+        return res;
     }
 };
 
 
-vector<pair<int,int>> parse(string s) {
-    pair<int, int> edge;
-    vector<pair<int,int> > result;
+vector<pair<num,num>> parse(string s) {
+    pair<num, num> edge;
+    vector<pair<num,num> > result;
 
-    // using regex
     try {
-        regex re("-?[0-9]+"); //match consectuive numbers
+        regex re("-?[0-9]+"); // match numbers
         sregex_iterator next(s.begin(), s.end(), re);
         sregex_iterator end;
         while (next != end) {
@@ -53,6 +123,7 @@ vector<pair<int,int>> parse(string s) {
 
             match1 = *next;
             next++;
+
             // iterate to next match
             if (next != end) {
                 match2 = *next;
@@ -69,60 +140,64 @@ vector<pair<int,int>> parse(string s) {
     return result;
 }
 
-int main(int argc, char** argv) {
 
-    // read and display init arguments
-    cout << "Called with " << argc << " arguments\n";
-    for (int i = 0; i < argc; ++i) {
-        cout << "Arg " << i << " is " << argv[i] << "\n";
-    }
-
-    // separator character
-    const char comma = ',';
+void runnable(num argc, char** argv) {
+    Graph graph(0);
 
     while (!cin.eof()) {
         string line;
         getline(cin, line);
         istringstream input(line);
 
-        vector<unsigned> nums;
-        Graph graph(0);
 
         while (!input.eof()) {
             char cmd;
-            // parse an integer
+            // parse an numeger
             input >> cmd;
             if (input.fail()) {
                 // cerr << "Error command";
                 break;
             }
-            cout << "command: " <<cmd << endl;
+            cout << "command: " << cmd << endl;
 
             if (cmd == 'V') {
-                unsigned int ver_num;
+                num ver_num;
                 input >> ver_num;
-                graph = Graph(ver_num);
+                graph.init(ver_num);
                 cout << cmd << " " << ver_num << endl;
+                graph.showBasic();
                 break;
             } else if (cmd == 'E') {
                 string raw_ver;
                 input >> raw_ver;
-                vector<pair<int, int>> edge = parse(raw_ver);
-                cout << cmd <<" " << raw_ver << endl;
+                vector<pair<num, num>> edge = parse(raw_ver);
+                cout << cmd << " " << raw_ver << endl;
                 for (auto p: edge) {
-                    graph.addEdge(p.first, p.second);
+                    bool isAdded = graph.addEdge(p.first, p.second);
+                    if (!isAdded) {
+                        cout << "The edge <" << p.first << "," << p.second
+                        << "> is out of the bound and cannot be added" << endl;
+                    }
                 }
+                // graph.showGraph();
                 break;
             } else if (cmd == 's') {
-                unsigned int src, dest;
+                num src, dest;
                 input >> src >> dest;
-                cout << cmd << " " << src << " " << dest << endl;
+                cout << "cmd:" << cmd << ", src:" << src << ", dest:" << dest << endl;
+                string answer = graph.shortestDest(src, dest);
+                cout << answer << endl;
                 break;
             } else {
                 cout << "Error: the command is invalid " << cmd << endl;
                 break;
             }
         }
-        cout << "newCycle" <<endl;
+        // cout << "newCycle" << endl;
     }
+}
+
+int main(int argc, char** argv) {
+    runnable(argc, argv);
+    return 0;
 }
