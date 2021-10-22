@@ -22,18 +22,19 @@ private:
     // return: whether a path can be established
     bool bfs(num src, num dest, vector<num> & traversed) {
         queue<num> que;
-        vector<bool> visited(v, false);
-
+        vector<num> visited(v + 1, 0);
         visited[src] = true;
         que.push(src);
-        goto end;
 
         while(!que.empty()) {
             num u = que.front();
             que.pop();
+            // cout << "first " <<u << ", size " << adj.size() << endl;
+
             for (auto block: adj[u]) {
-                if (!visited[block]) {
-                    visited[block] = true;
+                // cout << " later block "<< block << endl;
+                if (visited[block] == 0) {
+                    visited[block] = 1;
                     traversed[block] = u;
                     que.push(block);
 
@@ -43,7 +44,7 @@ private:
                 }
             }
         }
-        end:
+
         return false;
     }
 
@@ -55,8 +56,9 @@ public:
 
     void init(num vertex_num) {
         v = vertex_num;
-        cout << "new v" << v << endl;
-        adj = vector<vector<num>>(v+1, vector<num>());
+        // cout << "new v" << v << endl;
+        adj = vector<vector<num>>(v + 1, vector<num>());
+        // showGraph();
     }
     void showBasic() {
         cout << "v " <<v <<endl;
@@ -75,7 +77,7 @@ public:
 
     void showGraph() {
         cout << "V: " << v << endl;
-        for (num i = 1; i < adj.size();i++) {
+        for (num i = 0; i < adj.size();i++) {
             cout << "Node #" << i <<": ";
             vector<num> roads = adj[i];
             for (auto i: roads) {
@@ -86,11 +88,17 @@ public:
     }
 
     string shortestDest(num src, num dest) {
-        vector<num> traverse(v, -1);
+        // showGraph();
+        vector<num> traverse(v + 1, -1);
         if (src == dest) {
             return to_string(src);
         }
-        bool found = bfs(src, dest, traverse);
+        bool found = false;
+        try {
+            found = bfs(src, dest, traverse);
+        } catch (exception & e) {
+            cerr << e.what() << endl;
+        }
         if (!found) {
             return "Error: a path does not exist between node<"
                 + to_string(src) + "> and node<" + to_string(dest) + ">" ;
@@ -101,7 +109,7 @@ public:
         string res = to_string(dest);
 
         while (traverse[next] != -1) {
-            res = to_string(traverse[next]) + '+' + res;
+            res = to_string(traverse[next]) + '-' + res;
             next = traverse[next];
         }
         return res;
@@ -158,20 +166,20 @@ void runnable(num argc, char** argv) {
                 // cerr << "Error command";
                 break;
             }
-            cout << "command: " << cmd << endl;
+            // cout << "command: " << cmd << endl;
 
             if (cmd == 'V') {
                 num ver_num;
                 input >> ver_num;
                 graph.init(ver_num);
-                cout << cmd << " " << ver_num << endl;
-                graph.showBasic();
+                // cout << cmd << " " << ver_num << endl;
+                // graph.showBasic();
                 break;
             } else if (cmd == 'E') {
                 string raw_ver;
                 input >> raw_ver;
                 vector<pair<num, num>> edge = parse(raw_ver);
-                cout << cmd << " " << raw_ver << endl;
+                // cout << cmd << " " << raw_ver << endl;
                 for (auto p: edge) {
                     bool isAdded = graph.addEdge(p.first, p.second);
                     if (!isAdded) {
@@ -184,7 +192,7 @@ void runnable(num argc, char** argv) {
             } else if (cmd == 's') {
                 num src, dest;
                 input >> src >> dest;
-                cout << "cmd:" << cmd << ", src:" << src << ", dest:" << dest << endl;
+                // cout << "cmd:" << cmd << ", src:" << src << ", dest:" << dest << endl;
                 string answer = graph.shortestDest(src, dest);
                 cout << answer << endl;
                 break;
