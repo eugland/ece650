@@ -2,13 +2,42 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <queue>
+#include <algorithm>
 
 using namespace std;
 
-int main(int argc, char** argv) {
-    // Test code. Replaced with your code
+class Graph {
+public:
+    int v;
+    vector<vector<int>> adj;
 
-    // Print command line arguments that were used to start the program
+
+
+    Graph(int vertex_num) {
+        v = vertex_num;
+        adj = vector<vector<int>>(v, vector<int>());
+    }
+
+    bool addEdge(int src, int dest) {
+        adj[src].push_back(dest);
+        adj[src].push_back(src);
+        return false;
+    }
+
+    bool bfs(int src, int dest, int v, int pred[]) {
+//        queue<int> que;
+//        bool visited[v];
+//        fill_n(pred, v, -1);
+//        visited[src];
+        return false;
+    }
+};
+
+
+int main(int argc, char** argv) {
+
+    // read and display init arguments
     cout << "Called with " << argc << " arguments\n";
     for (int i = 0; i < argc; ++i) {
         cout << "Arg " << i << " is " << argv[i] << "\n";
@@ -17,60 +46,45 @@ int main(int argc, char** argv) {
     // separator character
     const char comma = ',';
 
-    // read from stdin until EOF
     while (!cin.eof()) {
-        cout << "Enter numbers separated by comma: ";
-
-        // read a line of input until EOL and store in a string
         string line;
         getline(cin, line);
-
-        // create an input stream based on the line
-        // we will use the input stream to parse the line
         istringstream input(line);
 
-        // we expect each line to contain a list of numbers
-        // this vector will store the numbers.
-        // they are assumed to be unsigned (i.e., positive)
         vector<unsigned> nums;
+        Graph graph(0);
 
-        // while there are characters in the input line
         while (!input.eof()) {
-            unsigned num;
+            char cmd;
             // parse an integer
-            input >> num;
+            input >> cmd;
             if (input.fail()) {
-                cerr << "Error parsing a number\n";
+                // cerr << "Error command";
                 break;
-            } else
-                nums.push_back(num);
+            }
+            cout << "command: " <<cmd << endl;
 
-            // if eof bail out
-            if (input.eof()) break;
-
-            // read a character
-            // Note that whitespace is ignored
-            char separator;
-            input >> separator;
-
-            // if error parsing, or if the character is not a comma
-            if (input.fail() || separator != comma) {
-                cerr << "Error parsing separator\n";
+            if (cmd == 'V') {
+                unsigned int ver_num;
+                input >> ver_num;
+                graph = Graph(ver_num);
+                cout << cmd << " " << ver_num << endl;
+                break;
+            } else if (cmd == 'E') {
+                string raw_ver;
+                input >> raw_ver;
+                cout << cmd <<" " << raw_ver << endl;
+                break;
+            } else if (cmd == 's') {
+                unsigned int src, dest;
+                input >> src >> dest;
+                cout << cmd << " " << src << " " << dest << endl;
+                break;
+            } else {
+                cout << "Error: the command is invalid " << cmd << endl;
                 break;
             }
         }
-
-        // done parsing a line, print the numbers
-        if (!nums.empty()) {
-            cout << "\nYou have entered " << nums.size() << " numbers: ";
-            size_t i = 0;
-            for (unsigned x : nums) {
-                cout << x;
-                // print a comma if not the last number
-                i++;
-                if (i < nums.size()) cout << ",";
-            }
-        }
-        cout << endl;
+        cout << "newCycle" <<endl;
     }
 }
