@@ -89,7 +89,8 @@ public:
 
     string shortestDest(num src, num dest) {
         // showGraph();
-        vector<num> traverse(v + 1, -1);
+        num negative = -1; //
+        vector<num> traverse(v + 1, negative);
         if (src == dest) {
             return to_string(src);
         }
@@ -108,7 +109,7 @@ public:
         path.push_back(next);
         string res = to_string(dest);
 
-        while (traverse[next] != -1) {
+        while (traverse[next] != negative) {
             res = to_string(traverse[next]) + '-' + res;
             next = traverse[next];
         }

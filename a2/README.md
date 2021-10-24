@@ -1,5 +1,11 @@
 # ECE650 : Assignment 2
 
+Please see sample build for an example test run 
+```bash
+$ cd ./sample-build && ./ece650-a2 < sample.txt
+```
+
+
 Replace FIRST_NAME, LAST_NAME, WATIAM, and STUDENT_ID, EMAIL in
 `user.yml` by your first and last name, WatIAM id, student number, and
 email, respectively. Whenever possible, please use ASCII characters.
@@ -14,3 +20,4 @@ You might need to modify `CMakeLists.txt` if you are adding additional
 source files for your code and/or tests.
 
 Commit your changes and submit on GitHub.
+
