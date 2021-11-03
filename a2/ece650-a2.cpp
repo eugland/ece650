@@ -3,7 +3,6 @@
 #include <sstream>
 #include <vector>
 #include <queue>
-#include <algorithm>
 #include <regex>
 
 using namespace std;
@@ -50,7 +49,8 @@ private:
 
 public:
 
-    Graph(num vertex_num) {
+    explicit Graph(num vertex_num) {
+        v = 0;
         init(vertex_num);
     }
 
@@ -60,9 +60,9 @@ public:
         adj = vector<vector<num>>(v + 1, vector<num>());
         // showGraph();
     }
-    void showBasic() {
-        cout << "v " <<v <<endl;
-    }
+//    void showBasic() const {
+//        cout << "v " <<v <<endl;
+//    }
 
 
     bool addEdge(num src, num dest) {
@@ -75,17 +75,17 @@ public:
         return true;
     }
 
-    void showGraph() {
-        cout << "V: " << v << endl;
-        for (num i = 0; i < adj.size();i++) {
-            cout << "Node #" << i <<": ";
-            vector<num> roads = adj[i];
-            for (auto i: roads) {
-                cout << to_string(i) + " ";
-            }
-            cout << endl;
-        }
-    }
+//    void showGraph() {
+//        cout << "V: " << v << endl;
+//        for (num i = 0; i < adj.size();i++) {
+//            cout << "Node #" << i <<": ";
+//            vector<num> roads = adj[i];
+//            for (auto i: roads) {
+//                cout << to_string(i) + " ";
+//            }
+//            cout << endl;
+//        }
+//    }
 
     string shortestDest(num src, num dest) {
         // showGraph();
@@ -110,7 +110,7 @@ public:
         string res = to_string(dest);
 
         while (traverse[next] != negative) {
-            res = to_string(traverse[next]) + '-' + res;
+            res =  res.insert(0, to_string(traverse[next]) + '-');
             next = traverse[next];
         }
         return res;
@@ -144,13 +144,14 @@ vector<pair<num,num>> parse(string s) {
         }
     }
     catch (regex_error& e) {
+        cout << "Error: cannot parse coordinates input" << endl;
         result.clear();
     }
     return result;
 }
 
 
-void runnable(num argc, char** argv) {
+void runnable() {
     Graph graph(0);
 
     while (!cin.eof()) {
@@ -161,7 +162,7 @@ void runnable(num argc, char** argv) {
 
         while (!input.eof()) {
             char cmd;
-            // parse an numeger
+            // parse a number
             input >> cmd;
             if (input.fail()) {
                 // cerr << "Error command";
@@ -170,8 +171,11 @@ void runnable(num argc, char** argv) {
             // cout << "command: " << cmd << endl;
 
             if (cmd == 'V') {
-                num ver_num;
+                num ver_num = 0;
                 input >> ver_num;
+                if (ver_num < 0 ) {
+                    cout << "Error: V smaller than 0" << endl;
+                }
                 graph.init(ver_num);
                 // cout << cmd << " " << ver_num << endl;
                 // graph.showBasic();
@@ -184,7 +188,7 @@ void runnable(num argc, char** argv) {
                 for (auto p: edge) {
                     bool isAdded = graph.addEdge(p.first, p.second);
                     if (!isAdded) {
-                        cout << "The edge <" << p.first << "," << p.second
+                        cout << "Error: The edge <" << p.first << "," << p.second
                         << "> is out of the bound and cannot be added" << endl;
                     }
                 }
@@ -206,7 +210,7 @@ void runnable(num argc, char** argv) {
     }
 }
 
-int main(int argc, char** argv) {
-    runnable(argc, argv);
+int main() {
+    runnable();
     return 0;
 }
