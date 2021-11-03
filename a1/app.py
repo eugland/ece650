@@ -19,7 +19,7 @@ def main():
         try:
             line = sys.stdin.readline().strip()
             if line == '':
-                sys.stderr.write('Program exiting on empty string')
+                # sys.stderr.write('Program exiting on empty string')
                 break
 
             # process the input and perform logic
@@ -41,10 +41,10 @@ def main():
             elif in_word.cmd == 'rm':
                 streets.remove(in_word.street_name)
             else:
-                print(f'Error: your command "{line}" was not understood')
+                print(f'Error: your command "{line}" was not understood', file=sys.stderr)
 
         except Exception as e:
-            print(f'Error: received unhandled exception, continue operation {e}')
+            print(f'Error: received unhandled exception, continue operation {e}', file=sys.stderr)
 
 
 # if __name__ == "__main__":

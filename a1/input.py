@@ -1,5 +1,6 @@
 import shlex
 import re
+import sys
 from sys import stderr
 from node import Node
 
@@ -98,7 +99,7 @@ def process_input(line) -> InputContent:
 
     if cmd == ADD:
         if len(li) <= 1:
-            print(f'ERROR: for adding {r.__dict__}, {li}, {cord} you cannot have only 1 coordinate. ')
+            print(f'Error: for adding {r.__dict__}, {li}, {cord} you cannot have only 1 coordinate. ', file=sys.stderr)
             r.status = False
             return r
 
@@ -106,39 +107,39 @@ def process_input(line) -> InputContent:
     return r
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # invalid test:
 
-    print('unrecognized anything')
-    test = process_input('dasdasdas')
-    print(test.__dict__)
-
-    print('unrecognized command')
-    test = process_input('   inspect     "weeber street"    (1,2)(3,4)')
-    print(test.__dict__)
-
-    print('missing street and coordinates')
-    test = process_input('   add         ')
-    print(test.__dict__)
-
-    print('missing coordinates')
-    test = process_input('   add     "w"    ')
-    print(test.__dict__)
-
-    print('missing spaces')
-    test = process_input('add"w"(1,2)')
-    print(test.__dict__)
-
-    # Valid test
-    # rm
-    print('rm')
-    test = process_input('   rm     "w"    ')
-    print(test.__dict__)
-
-    print('add')
-    test = process_input('   add     "weeber street"    (1,2)(3,4)')
-    print(test.__dict__)
-
-    print('mod')
-    test = process_input('   mod     "weeber street"    (1,2)(3,4)')
-    print(test.__dict__)
+    # print('unrecognized anything')
+    # test = process_input('dasdasdas')
+    # print(test.__dict__)
+    #
+    # print('unrecognized command')
+    # test = process_input('   inspect     "weeber street"    (1,2)(3,4)')
+    # print(test.__dict__)
+    #
+    # print('missing street and coordinates')
+    # test = process_input('   add         ')
+    # print(test.__dict__)
+    #
+    # print('missing coordinates')
+    # test = process_input('   add     "w"    ')
+    # print(test.__dict__)
+    #
+    # print('missing spaces')
+    # test = process_input('add"w"(1,2)')
+    # print(test.__dict__)
+    #
+    # # Valid test
+    # # rm
+    # print('rm')
+    # test = process_input('   rm     "w"    ')
+    # print(test.__dict__)
+    #
+    # print('add')
+    # test = process_input('   add     "weeber street"    (1,2)(3,4)')
+    # print(test.__dict__)
+    #
+    # print('mod')
+    # test = process_input('   mod     "weeber street"    (1,2)(3,4)')
+    # print(test.__dict__)

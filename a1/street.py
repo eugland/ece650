@@ -1,6 +1,7 @@
 from graph import Graph
 from node import Node
 from line import Line
+from sys import stderr
 
 
 class Street:
@@ -13,19 +14,19 @@ class Street:
         if street_name not in self.street_db:
             self.street_db[street_name] = coordinates
         else:
-            print(f'ERRROR Street.add(): {street_name} already exists')
+            print(f'Error: Street.add(): {street_name} already exists', file=stderr)
 
     def modify(self, street_name: str, coordinates: list):
         if street_name in self.street_db:
             self.street_db[street_name] = coordinates
         else:
-            print(f'ERRROR Street.modify(): {street_name} does not exists')
+            print(f'Error: Street.modify(): {street_name} does not exists', file=stderr)
 
     def remove(self, street_name):
         if street_name in self.street_db:
             del self.street_db[street_name]
         else:
-            print(f'ERRROR Street.remove(): {street_name} does not exists')
+            print(f'Error: Street.remove(): {street_name} does not exists', file=stderr)
 
     def to_line(self):
         street_lns = {}
@@ -45,7 +46,7 @@ class Street:
         graph.generate_graph()
 
 
-if __name__ == '__main__':
-    st = Street()
-    st.add('Cool weeber Street', [Node(1, 2), Node(3, 4), Node(5, 6)])
-    print(st.to_line())
+# if __name__ == '__main__':
+    # st = Street()
+    # st.add('Cool weeber Street', [Node(1, 2), Node(3, 4), Node(5, 6)])
+    # print(st.to_line())
