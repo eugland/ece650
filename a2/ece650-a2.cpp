@@ -91,6 +91,9 @@ public:
         // showGraph();
         num negative = -1; //
         vector<num> traverse(v + 1, negative);
+        if (src < 1 || src > v || dest < 1 || dest > v || src == dest) {
+            return "Error: source and destination out of bound";
+        }
         if (src == dest) {
             return to_string(src);
         }
@@ -198,6 +201,7 @@ void runnable() {
                 num src, dest;
                 input >> src >> dest;
                 // cout << "cmd:" << cmd << ", src:" << src << ", dest:" << dest << endl;
+
                 string answer = graph.shortestDest(src, dest);
                 cout << answer << endl;
                 break;
