@@ -60,6 +60,12 @@ public:
         adj = vector<vector<num>>(v + 1, vector<num>());
         // showGraph();
     }
+
+    void init() {
+        // cout << "new v" << v << endl;
+        adj = vector<vector<num>>(v + 1, vector<num>());
+        // showGraph();
+    }
 //    void showBasic() const {
 //        cout << "v " <<v <<endl;
 //    }
@@ -149,6 +155,7 @@ vector<pair<num,num>> parse(string s) {
     catch (regex_error& e) {
         cout << "Error: cannot parse coordinates input" << endl;
         result.clear();
+        return result;
     }
     return result;
 }
@@ -193,6 +200,8 @@ void runnable() {
                     if (!isAdded) {
                         cout << "Error: The edge <" << p.first << "," << p.second
                         << "> is out of the bound and cannot be added" << endl;
+                        graph.init();
+                        break;
                     }
                 }
                 // graph.showGraph();
