@@ -1,8 +1,8 @@
 --- # Personal information
-first: FIRST_NAME
-last: LAST_NAME
-watiam: WATIAM_ID
-student: STUDENT_ID
-email: email
-python: 3 
+first: Eugene
+last: Wang
+watiam: yj9wang
+student: 20657282
+email: yj9wang@uwaterloo.ca
+python: 3
 ...
