@@ -4,7 +4,6 @@
 #include <fstream>
 #include <vector>
 #include <unistd.h>
-#include <limits>
 #include <algorithm>
 
 using namespace std;
@@ -21,12 +20,12 @@ int randint(int min, int max) {
     return num % (max - min + 1) + min;
 }
 
-// are_zero_line_segment basically check if x=x and y=y of two points.
+// basically check if x=x and y=y of two points.
 bool isPoint(vector<int> p1, vector<int> p2) {
     return p1[0] == p2[0] and p1[1] == p2[1];
 }
 
-// is_intersection_on_line_segment check if a point is on a line
+// check if a point is on a line
 bool isPointOnLine(vector<int> l1, vector<int> l2, vector<double> p) {
     vector<int> x { l1[0], l2[0] };
     vector<int> y { l1[1], l2[1] };
@@ -52,6 +51,7 @@ bool areOverlapping(vector<int> p1, vector<int> p2, vector<int> p3, vector<int> 
                 (y3 <= y1 and y1 < y4) or
                 (y3 < y2 and y2 <= y4)) return true;
     }
+
     // k exist here
     if (p1[0] != p2[0] and p3[0] != p4[0]) {
         x1 = p2[0], y1 = p2[1], x2 = p1[0], y2 = p1[1];
@@ -133,12 +133,9 @@ bool areLineIntersecting(vector<int> p1, vector<int> p2, vector<int> p3, vector<
                 return true;
             }
         }
-
     }
     return false;
-
 }
-
 
 
 void unitTest() {
