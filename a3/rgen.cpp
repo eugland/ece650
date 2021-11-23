@@ -17,7 +17,7 @@ int randint(int min, int max) {
     ifstream urandom("/dev/urandom");
     urandom.read((char *) &num, sizeof(num));
     urandom.close();
-    return num % (max - min + 1) + min;
+    return num % (max - min + 1) + min; // NOLINT(cppcoreguidelines-narrowing-conversions)
 }
 
 // basically check if x=x and y=y of two points.
@@ -138,30 +138,40 @@ bool areLineIntersecting(vector<int> p1, vector<int> p2, vector<int> p3, vector<
 }
 
 
-void unitTest() {
-    // testing randint
-    cout << "randint(0,2): ";
-    for (int i = 0; i < 10; i ++) {
-        cout << randint(0, 2) << " ";
-    }
-    cout << endl;
+//void unitTest() {
+//    // testing randint
+//    cout << "randint(0,2): ";
+//    for (int i = 0; i < 10; i ++) {
+//        cout << randint(0, 2) << " ";
+//    }
+//    cout << endl;
+//
+//    //testing same point
+//    vector<int> a = {1,2};
+//    vector<int> b = {1,2};
+//    cout << "is same point {1,2} and {1,2}: " << isPoint(a, b) << endl;
+//    b[1] = 1;
+//    cout << "is same point {1,2} and {1,1}: " << isPoint(a, b) << endl;
+//
+//
+//    // test isPointOnLine
+//    vector<int> la = {0,0};
+//    vector<int> lb = {3,3};
+//    vector<double> p = {2,2};
+//    cout << "point is on line: " << isPointOnLine(la, lb, p) << endl;
+//    p[0]=4;
+//    cout << "point is on line: " << isPointOnLine(la, lb, p) << endl;
+//}
 
-    //testing same point
-    vector<int> a = {1,2};
-    vector<int> b = {1,2};
-    cout << "is same point {1,2} and {1,2}: " << isPoint(a, b) << endl;
-    b[1] = 1;
-    cout << "is same point {1,2} and {1,1}: " << isPoint(a, b) << endl;
 
-
-    // test isPointOnLine
-    vector<int> la = {0,0};
-    vector<int> lb = {3,3};
-    vector<double> p = {2,2};
-    cout << "point is on line: " << isPointOnLine(la, lb, p) << endl;
-    p[0]=4;
-    cout << "point is on line: " << isPointOnLine(la, lb, p) << endl;
+string numToLetter(int num) {
+    if (num == 0) return "A";
+    int q = num / 26;
+    int l = num % 26;
+    return numToLetter(q) + char ('A' + l);
 }
+
+
 
 int main (int argc, char *argv[]) {
     int option;
@@ -178,8 +188,7 @@ int main (int argc, char *argv[]) {
     // cout << s << " " << n << " " << l << " " << c << endl;
 
     vector<string> street_list;
-    bool flag = true;
-    while (flag) {
+    while (true) {
         int st_id = 1;
         int st_num = randint(2, s);
         int wait_num = randint(5, l);
@@ -219,7 +228,7 @@ int main (int argc, char *argv[]) {
 
                     // check if overlap within the street
                     if (street.size() > 1) {
-                        for (int i = 0; i < street.size() - 1; i++) {
+                        for (unsigned int i = 0; i < street.size() - 1; i++) {
                             if (areOverlapping(street[i], street[i+1], street.back(), points)) {
                                 success = 0;
                             }
@@ -228,8 +237,8 @@ int main (int argc, char *argv[]) {
 
                     // check if overlap with other street
                     if (graph.size() > 1) {
-                        for (int i = 0; i < graph.size() - 1; i++) {
-                            for (int j = 0; j < graph[i].size() - 1; j++) {
+                        for (unsigned int i = 0; i < graph.size() - 1; i++) {
+                            for (unsigned int j = 0; j < graph[i].size() - 1; j++) {
                                 if (areOverlapping(graph[i][j], graph[i][j + 1], street.back(), points)) {
                                     success = 0;
                                 }
@@ -239,7 +248,7 @@ int main (int argc, char *argv[]) {
 
                     // check if intersection within the street (maybe success)
                     if (street.size() > 2) {
-                        for (int i = 0; i < street.size() - 2; i ++) {
+                        for (unsigned int i = 0; i < street.size() - 2; i ++) {
                             if(areLineIntersecting(street[i], street[i + 1], street.back(), points)) {
                                 success = 0;
                             }
@@ -254,11 +263,12 @@ int main (int argc, char *argv[]) {
             st_id ++;
         }
 
-        for (int i = 0; i < graph.size(); i ++) {
-            street_list.push_back("street " + to_string(i+1));
-            cout << "add \"street " << i + 1 << "\"";
-            for (int j = 0; j < graph[i].size(); j ++) {
-                cout << " (" << graph[i][j][0] << "," << graph[i][j][1] << ")";
+        for (unsigned int i = 0; i < graph.size(); i ++) {
+            string st_name = "street " + numToLetter(i);
+            street_list.push_back(st_name);
+            cout << "add \"" << st_name << "\"";
+            for (auto & j : graph[i]) {
+                cout << " (" << j[0] << "," << j[1] << ")";
             }
             cout << endl;
         }
@@ -267,15 +277,11 @@ int main (int argc, char *argv[]) {
         sleep(wait_num);
 
         if (!street_list.empty()) {
-            for (int i = 0; i < street_list.size(); i++){
-                cout << "rm \"" << street_list[i] << "\"" << endl;
+            for (auto & i : street_list){
+                cout << "rm \"" << i << "\"" << endl;
             }
         }
         street_list.clear();
     }
-
-
-    // unitTest();
-
     return 0;
 }
