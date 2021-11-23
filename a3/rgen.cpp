@@ -174,18 +174,20 @@ string numToLetter(int num) {
 
 
 int main (int argc, char *argv[]) {
+    // cout << endl;
     int option;
     string s_com, n_com, l_com, c_com;
     int s = 10, n = 5, l = 5, c = 20;
 
     while ((option=getopt(argc, argv, "s:n:l:c:")) != -1){
-        int number = stoi(optarg);
+        int number = atoi(optarg);
         if (option == 's') s = number;
         else if (option == 'n') n = number;
         else if (option == 'l') l = number;
         else if (option == 'c') c = number;
     }
-    // cout << s << " " << n << " " << l << " " << c << endl;
+
+    //cout << s << " " << n << " " << l << " " << c << endl;
 
     vector<string> street_list;
     while (true) {

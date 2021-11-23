@@ -14,7 +14,6 @@ GG = 'gg'
 COMMAND = [RM, ADD, MOD, GG]
 
 
-
 class Node:
     def __init__(self, x, y) -> None:
         self.x = float(x)
@@ -356,7 +355,7 @@ class Graph:
 
     # for test only
     def output_street_vertices(self):
-        print("V = {")
+        print("V = {", flush=True)
         for street_points in self.vertices.items():
             print("====== street name: " + street_points[0] + " ======")
             for seg_points in street_points[1].items():
@@ -375,11 +374,13 @@ class Graph:
         return vertices_dict
 
     def output(self):   # or __str__, __repr__ ?
-        print("V = {")
         output_vertices_dict = self.gen_output_vertices_dict()
-        for point in output_vertices_dict:
-            print(f'  {str(output_vertices_dict[point])}: ({point.x:.2f}, {point.y:.2f})')
-        print("}")
+        max_v = 0
+        try:
+            max_v = max(output_vertices_dict.values())
+        except RuntimeError:
+            pass
+        print(f"V {max_v}", flush=True)
 
         # for test only
         # print("E = {")
@@ -387,20 +388,15 @@ class Graph:
         #     print("  <" + str(item.n1) + "," + str(item.n2) + ">")
         # print("}")
 
-        print("E = {")
+        print("E {", end='', flush=True)
         edges_list = list(self.edges)
         if len(edges_list) != 0:
             for item in edges_list[:-1]:
-                print("  <" + str(output_vertices_dict[item.n1]) + "," + str(
-                    output_vertices_dict[item.n2]) + ">,")
-            print("  <" + str(output_vertices_dict[edges_list[-1].n1]) + "," + str(
-                output_vertices_dict[edges_list[-1].n2]) + ">")
-        print("}")
-
-
-
-
-from itertools import combinations
+                print("<" + str(output_vertices_dict[item.n1]) + "," + str(
+                    output_vertices_dict[item.n2]) + ">,", end='', flush=True)
+            print("<" + str(output_vertices_dict[edges_list[-1].n1]) + "," + str(
+                output_vertices_dict[edges_list[-1].n2]) + ">", end='', flush=True)
+        print("}", flush=True)
 
 
 def in_embedded_dict(target, dictionary):
@@ -510,6 +506,7 @@ def main():
             if in_word.cmd == 'gg':
                 prev_vert = graph.gen_output_vertices_dict()
                 graph, count = gen_graph(streets, prev_vert, count)
+                count = 1
                 graph.output()
             elif in_word.cmd == 'add':
                 streets.add(in_word.street_name, in_word.coordinates)
@@ -517,11 +514,12 @@ def main():
                 streets.modify(in_word.street_name, in_word.coordinates)
             elif in_word.cmd == 'rm':
                 streets.remove(in_word.street_name)
-            else:
-                print(f'Error: your command "{line}" was not understood', file=sys.stderr)
+             # else:
+                # print(f'Error: your command "{line}" was not understood', file=sys.stderr)
 
         except Exception as e:
-            print(f'Error: received unhandled exception, continue operation {e}', file=sys.stderr)
+            # print(f'Error: received unhandled exception {e}', file=sys.stderr)
+            pass
 
 
 if __name__ == "__main__":
