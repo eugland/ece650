@@ -200,32 +200,81 @@ int main (int argc, char *argv[]) {
                 points.push_back(randint(-c, c));
                 points.push_back(randint(-c, c));
 
-                if (!street.empty()) {
-                    int flag = 0, count = 0;
-                    while(!flag) {
-                        count ++;
-                        if (count > 25) {
-                            cerr << "Error: failed after 25 attempts at generating" << endl;
-                            exit(1);
+                int success = 0, count = 0;
+                if (street.empty()) { success = 1; }
+
+                while(!success) {
+                    count ++;
+                    if (count > 25) {
+                        cerr << "Error: failed after 25 attempts at generating" << endl;
+                        exit(1);
+                    }
+                    points[0] = randint(-c, c);
+                    points[1] = randint(-c, c);
+
+                    // assume success and attacks?
+                    success = true;
+
+                    // check if two points are the same, so no meaningful line segment
+                    if (isPoint(points, street.back())) {
+                        success = 0;
+                    }
+
+                    // check if overlap within the street
+                    if (street.size() > 1) {
+                        for (int i = 0; i < street.size() - 1; i++) {
+                            if (areOverlapping(street[i], street[i+1], street.back(), points)) {
+                                success = 0;
+                            }
                         }
-                        points[0] = randint(-c, c);
-                        points[1] = randint(-c, c)};
+                    }
 
-                        // check if two points are the same, so no meaningful line segement
-                        if (!isPoint(points, street.back())) {
-                            flag ++;
+                    // check if overlap with other street
+                    if (graph.size() > 1) {
+                        for (int i = 0; i < graph.size() - 1; i++) {
+                            for (int j = 0; j < graph[i].size() - 1; j++) {
+                                if (areOverlapping(graph[i][j], graph[i][j + 1], street.back(), points)) {
+                                    success = 0;
+                                }
+                            }
                         }
+                    }
 
-                        if (street.size() > 1) {
-                            for (int i = 0; i < street.size() - 1; i++) {
-
+                    // check if intersection within the street (maybe success)
+                    if (street.size() > 2) {
+                        for (int i = 0; i < street.size() - 2; i ++) {
+                            if(areLineIntersecting(street[i], street[i + 1], street.back(), points)) {
+                                success = 0;
                             }
                         }
                     }
                 }
+                // increment a success point
+                street.push_back(points);
+                n_id ++;
             }
+            graph.push_back(street);
+            st_id ++;
         }
 
+        for (int i = 0; i < graph.size(); i ++) {
+            street_list.push_back("street " + to_string(i+1));
+            cout << "add \"street " << i + 1 << "\"";
+            for (int j = 0; j < graph[i].size(); j ++) {
+                cout << " (" << graph[i][j][0] << "," << graph[i][j][1] << ")";
+            }
+            cout << endl;
+        }
+
+        cout << "gg" << endl;
+        sleep(wait_num);
+
+        if (!street_list.empty()) {
+            for (int i = 0; i < street_list.size(); i++){
+                cout << "rm \"" << street_list[i] << "\"" << endl;
+            }
+        }
+        street_list.clear();
     }
 
 
