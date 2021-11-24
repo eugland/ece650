@@ -11,7 +11,7 @@ typedef unsigned int num;
 
 class Graph {
 private:
-    num v;
+
     vector<vector<num>> adj;
 
     // Function: bfs() : do breadth first search from src to dest
@@ -48,7 +48,7 @@ private:
     }
 
 public:
-
+    num v;
     explicit Graph(num vertex_num) {
         v = 0;
         init(vertex_num);
@@ -195,16 +195,21 @@ void runnable() {
                 input >> raw_ver;
                 vector<pair<num, num>> edge = parse(raw_ver);
                 // cout << cmd << " " << raw_ver << endl;
+                bool all_good = true;
                 for (auto p: edge) {
-                    bool isAdded = graph.addEdge(p.first, p.second);
-                    if (!isAdded) {
-                        cout << "Error: The edge <" << p.first << "," << p.second
-                             << "> is out of the bound and cannot be added" << endl;
+                    if (!graph.addEdge(p.first, p.second)) {
+                        // cout << "Error: The edge <" << p.first << "," << p.second
+                            // << "> is out of the bound and cannot be added" << endl;
                         graph.init();
+                        all_good = false;
                         break;
                     }
                 }
-                // graph.showGraph();
+                if (all_good) {
+                    cout << "V " << graph.v << endl;
+                    cout << "E " << raw_ver << endl;
+                }
+
                 break;
             } else if (cmd == 's') {
                 num src, dest;
