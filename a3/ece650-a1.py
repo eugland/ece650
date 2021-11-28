@@ -388,15 +388,16 @@ class Graph:
         #     print("  <" + str(item.n1) + "," + str(item.n2) + ">")
         # print("}")
 
-        print("E {", end='', flush=True)
+        # print("E {", end='', flush=True)
         edges_list = list(self.edges)
         if len(edges_list) != 0:
-            for item in edges_list[:-1]:
-                print("<" + str(output_vertices_dict[item.n1]) + "," + str(
-                    output_vertices_dict[item.n2]) + ">,", end='', flush=True)
-            print("<" + str(output_vertices_dict[edges_list[-1].n1]) + "," + str(
-                output_vertices_dict[edges_list[-1].n2]) + ">", end='', flush=True)
-        print("}", flush=True)
+            output = []
+            for item in edges_list:
+                sim = output_vertices_dict[item.n1] == output_vertices_dict[item.n2]
+                # sim = False
+                if not sim:
+                    output.append("<" + str(output_vertices_dict[item.n1]) + "," + str(output_vertices_dict[item.n2]) + ">")
+        print("E {" + ",".join(output) + "}", flush=True)
 
 
 def in_embedded_dict(target, dictionary):

@@ -1,2 +1,3 @@
-cd build
-./ece650-a3 -s 5 -n 4 -l 6 -c 21
+cd ./build/run/bin
+# cp ../ece650-a1.py .
+./ece650-a3 -s 2 -n 1 -l 5 -c 1

@@ -11,6 +11,28 @@ typedef pid_t Pid;
 
 int main (int argc, char **argv) {
 
+    // check for out of range here:
+    int option;
+    string s_com, n_com, l_com, c_com;
+    int s = 10, n = 5, l = 5, c = 20;
+
+    while ((option=getopt(argc, argv, "s:n:l:c:")) != -1){
+        int number = atoi(optarg);
+        if (option == 's') s = number;
+        else if (option == 'n') n = number;
+        else if (option == 'l') l = number;
+        else if (option == 'c') c = number;
+    }
+    if ( s < 2 || s > 10 ||
+            n < 1 ||
+            l < 5 ||
+            c < 1
+            ) {
+
+        cerr << "Error: your parameter is not right! \n";
+        return 0;
+    }
+
     vector<Pid> children;
 
     int rgenToA1[2], a1ToA2[2];
