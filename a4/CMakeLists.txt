@@ -27,3 +27,4 @@ target_link_libraries(ece650-a4 minisat-lib-static)
 add_executable(test test.cpp)
 # link MiniSAT libraries
 target_link_libraries(test minisat-lib-static)
+set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*")

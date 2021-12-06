@@ -226,11 +226,38 @@ ProcessorCount_cmd_nproc:FILEPATH=/usr/bin/nproc
 //Path to a program.
 ProcessorCount_cmd_sysctl:FILEPATH=/usr/sbin/sysctl
 
+//Link binaries statically.
+STATIC_BINARIES:BOOL=ON
+
+//Use SORELEASE in shared library filename.
+USE_SORELEASE:BOOL=ON
+
+//Path to a file.
+ZLIB_INCLUDE_DIR:PATH=/usr/include
+
+//Path to a library.
+ZLIB_LIBRARY_DEBUG:FILEPATH=ZLIB_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+ZLIB_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libz.so
+
 //Value Computed by CMake
 ece650-a4_BINARY_DIR:STATIC=/mnt/c/Users/eugen/Desktop/learn/ece650/yj9wang/a4/cmake-build-debug
 
 //Value Computed by CMake
 ece650-a4_SOURCE_DIR:STATIC=/mnt/c/Users/eugen/Desktop/learn/ece650/yj9wang/a4
+
+//Dependencies for the target
+minisat-lib-shared_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libz.so;
+
+//Dependencies for the target
+minisat-lib-static_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libz.so;
+
+//Value Computed by CMake
+minisat_BINARY_DIR:STATIC=/mnt/c/Users/eugen/Desktop/learn/ece650/yj9wang/a4/cmake-build-debug/minisat
+
+//Value Computed by CMake
+minisat_SOURCE_DIR:STATIC=/mnt/c/Users/eugen/Desktop/learn/ece650/yj9wang/a4/minisat
 
 
 ########################
@@ -345,7 +372,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -388,8 +415,16 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding ZLIB
+FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[/usr/lib/x86_64-linux-gnu/libz.so][/usr/include][v1.2.11()]
 //ADVANCED property for variable: ProcessorCount_cmd_nproc
 ProcessorCount_cmd_nproc-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: ProcessorCount_cmd_sysctl
 ProcessorCount_cmd_sysctl-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_INCLUDE_DIR
+ZLIB_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_LIBRARY_DEBUG
+ZLIB_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_LIBRARY_RELEASE
+ZLIB_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 
