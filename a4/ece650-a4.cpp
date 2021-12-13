@@ -34,7 +34,8 @@ public:
         if (src < 1 || src > vertex_int || dest < 1 || dest > vertex_int || src == dest) {
             return false;
         }
-        edges.push_back(make_pair(src, dest));
+        auto p = make_pair(src, dest);
+        edges.push_back(p);
         return true;
     }
 
@@ -101,7 +102,7 @@ public:
                             break;
                         }
                     }
-                    if (cover.size() == k) {
+                    if (cover.size() - k == 0) {
                         break;
                     }
                 }
@@ -109,8 +110,8 @@ public:
                 // sort
                 std::sort(cover.begin(), cover.end());
                 // output the result
-                for (int i = 0; i < cover.size(); ++i) {
-                    std::cout << cover[i] << " ";
+                for (int i : cover) {
+                    std::cout << i << " ";
                 }
                 solver.reset();
                 break;
